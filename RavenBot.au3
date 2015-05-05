@@ -132,10 +132,9 @@ Func runBot()
 		 SetLog("Error occurred..", $COLOR_RED)
 		 $errorCount = $errorCount + 1
 
-		 If $errorCount > 3 Then
-			SetLog("Too many error occurred..", $COLOR_RED)
+		 If $errorCount = 1 Then
+			; only saved screen shot at first error
 			SaveImageToFile()
-			ExitLoop
 		 EndIf
 	  Else
 		 $errorCount = 0
