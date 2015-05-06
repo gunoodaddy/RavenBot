@@ -18,21 +18,16 @@ Local Const $ARCHIEVEMENT_POPUP_CLOSE_BUTTON_REGION = [631, 378, 761, 474]
 
 Func waitMainScreen() ;Waits for main screen to popup
    SetLog("Waiting for Main Screen", $COLOR_ORANGE)
-   _log("waitMainScreen begin" )
    For $i = 0 To $RetryWaitCount
 	  Local $x, $y
 	  Local $bmpPath = @ScriptDir & "\images\screen_main.bmp"
 
-	  _log("waitMainScreen capture" )
 	  _CaptureRegion()
 
-	  _log("waitMainScreen image checking" )
 	  If ImageSearchArea($bmpPath, 0, $MAIN_SCREEN_CHECK_REGION, $x, $y, 30) Then
-		 _log("waitMainScreen OK" )
 		 SetLog("Main Screen Located", $COLOR_BLUE)
 		 Return True
 	  Else
-		 _log("waitMainScreen Fail" )
 		 closeAllPopupOnMainScreen()
  		 If _Sleep($SleepWaitMSec) Then Return False
 	  EndIf
@@ -59,7 +54,8 @@ Func checkStamina()
    Local $x, $y
    Local $needStamina = getStaminaCount($setting_stage_major)
    Local $lack = False
-   While 1
+   Local $checkingLongTime = False
+   While $RunState
 	  If _Sleep(100) Then Return
 
 	  _CaptureRegion()
@@ -68,10 +64,12 @@ Func checkStamina()
 
 	  For $i = $needStamina - 1 To 0 Step -1
 		 Local $bmpPath = @ScriptDir & "\images\stamina_lack_text_" & $i & ".bmp"
-		 _log("Stamina lack checking : " & $bmpPath )
+		 _console("Stamina lack checking : " & $bmpPath )
 
 		 If _ImageSearchArea($bmpPath, 0, 68, 10, 155, 34, $x, $y, $DefaultTolerance) Then
-			SetLog("Lack of stamina detected", $COLOR_RED)
+			If $checkingLongTime = False Then
+			   SetLog("Lack of stamina detected", $COLOR_RED)
+			EndIf
 
 			; Use stamia potion
 			;Click($x, $y)
@@ -83,12 +81,20 @@ Func checkStamina()
 			If ClickButtonImage(@ScriptDir & "\images\stamina_use_text.bmp") Then
 			   ClickButtonImage(@ScriptDir & "\images\button_ok.bmp")
 			EndIf
+
+			If $checkingLongTime = False Then
+			   SetLog("Waiting for enough stamina..", $COLOR_ORANGE)
+			EndIf
+			$checkingLongTime = True
 			$lack = True
 			ExitLoop
 		 EndIf
 	  Next
 
 	  If $lack = False Then
+		 If $checkingLongTime Then
+			SetLog("Enough stamina now", $COLOR_BLUE)
+		 EndIf
 		 ExitLoop
 	  EndIf
 

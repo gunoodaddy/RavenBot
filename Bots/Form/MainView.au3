@@ -269,11 +269,13 @@ Func btnStop()
    GUICtrlSetState($btnStart, $GUI_SHOW)
    GUICtrlSetState($btnStop, $GUI_HIDE)
 
+   If $RunState Then
+	  SetLog("Bot has stopped", $COLOR_ORANGE)
+   EndIf
+
    $Restart = False
    $RunState = False
    $PauseBot = True
-
-   SetLog("Bot has stopped", $COLOR_ORANGE)
 EndFunc
 
 ; System callback
