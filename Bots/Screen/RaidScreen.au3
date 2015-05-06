@@ -53,7 +53,7 @@ Func startRaidBattle()
 		 $foundRaidAttackButton = True
 	  EndIf
 
-	  If WaitBattleReady(True) Then
+	  If waitBattleReadyScreen(True) Then
 		 SetLog("Raid Battle Ready Screen Located", $COLOR_BLUE)
 		 Return True
 	  EndIf

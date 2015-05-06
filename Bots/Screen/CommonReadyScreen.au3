@@ -10,11 +10,19 @@ Local Const $ADVENTURE_BUFF2_POS[2] = [520, 148]
 Local Const $ADVENTURE_BUFF3_POS[2] = [590, 148]
 Local Const $ADVENTURE_BUFF4_POS[2] = [660, 148]
 
+Local Const $LOAD_COMPLETE_COLOR[1][4] = [[414, 247, 0x1E150E, 10]]
+
 
 Func selectBuffItem($battleId)
+   _log("Waiting for Battle Ready Screen to use buff items")
+
+   If waitBattleReadyScreen() = False Then
+	  SetLog("Failed to locate Battle Ready Screen.", $COLOR_RED)
+   EndIf
+
    SetLog("Selecting buff items...", $COLOR_ORANGE)
 
-   WaitBattleReady()
+   If _Sleep(2000) Then Return True	; to avoid loading status
 
    _CaptureRegion()
 
@@ -53,7 +61,7 @@ Func selectBuffItem($battleId)
 EndFunc	;==>selectBuffItem
 
 
-Func WaitBattleReady($checkOne = False)
+Func waitBattleReadyScreen($checkOne = False)
 
    Local $x, $y
    Local $image = @ScriptDir & "\images\screen_battle_ready.bmp"
@@ -66,21 +74,30 @@ Func WaitBattleReady($checkOne = False)
 
 	  If _ImageSearchArea($image, 0, $bound[0], $bound[1], $bound[2], $bound[3], $x, $y, $DefaultTolerance + 20) Then
 		 ; Success
-		 Return True
+		 If $checkOne Then Return True
+
+		 _Sleep(1000)
+
+		 ; But we need to check the loading status..
+		 If WaitScreenPixel($LOAD_COMPLETE_COLOR, True) Then
+			Return True
+		 Else
+			SetLog("Loading icon detected.", $COLOR_PINK)
+		 EndIf
 	  Else
 		 If $checkOne Then ExitLoop
 
 		 ; TODO : known issue : this ready button is only working from Adventure Battle mode......
 		 ; Dirty codes.....
-		 _clickReadyButton()
-
-		 If _Sleep($SleepWaitMSec) Then Return False
+		 _clickReadyButton()	; refer to AdventureScreen.au3
 	  EndIf
+
+	  If _Sleep($SleepWaitMSec) Then Return False
    Next
 
    Return False
 
-EndFunc	;==>WaitBattleReady
+EndFunc	;==>waitBattleReadyScreen
 
 
 Func clickBattleStartButton()

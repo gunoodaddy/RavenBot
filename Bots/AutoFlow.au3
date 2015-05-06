@@ -10,6 +10,8 @@
 
 Func AutoFlow()
    ; For test
+   ;doBattle($Id_Adventure)
+   ;doTempleBattle()
    ;doPvpBattle()
    ;sellItems()
    ;selectAdventureStage()
@@ -24,6 +26,17 @@ Func AutoFlow()
    EndIf
 
    If 1 Then
+   If $setting_daily_enabled Then
+	  If checkActiveDailyStatus() Then
+
+		 doDailyBattle()
+
+		 If waitMainScreen() = False Then
+			Return False
+		 EndIf
+	  EndIf
+   EndIf
+
    If $setting_raid_enabled Then
 	  If checkActiveRaidStatus() Then
 
@@ -164,6 +177,53 @@ Func doGuildBattle()
 
    Return True
 EndFunc	;==>doGuildBattle
+
+
+Func doDailyBattle()
+   If waitDailyScreen() = False Then
+	  Return
+   EndIf
+
+   Local $ok = False
+
+   If checkActiveDailyAdventureStatus() Then
+	  If waitDailyAdventureScreen() = False Then
+		 Return
+	  EndIf
+
+	  selectDailyAdventureLevel()
+
+	  startDailyAdventureBattle()
+
+	  ; Select Buff Item If you need
+	  selectBuffItem($Id_Daily)
+
+	  ; Start Battle
+	  clickBattleStartButton()
+
+	  ; Do Battle!
+	  doBattle($Id_Adventure)
+
+	  $ok = True
+   ElseIf checkActiveDailyTempleStatus() Then
+	  If waitDailyTempleScreen() = False Then
+		 Return
+	  EndIf
+
+	  ; Start Battle
+	  clickBattleStartButton()
+
+	  ; Do Battle!
+	  doTempleBattle()
+
+	  $ok = True
+   EndIf
+
+   If $ok Then
+	  $dailyAttackCount = $dailyAttackCount + 1
+	  updateStats()
+   EndIf
+EndFunc	;==>doDailyBattle
 
 
 Func doRaidBattle()

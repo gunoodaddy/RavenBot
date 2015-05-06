@@ -61,7 +61,7 @@ Func startPvpBattle()
    SetLog("Waiting for PvP Battle Ready Screen", $COLOR_ORANGE)
    For $i = 0 To $RetryWaitCount
 
-	  If WaitBattleReady(True) Then
+	  If waitBattleReadyScreen(True) Then
 		 SetLog("PvP Battle Ready Screen Located", $COLOR_BLUE)
 		 Return True
 	  EndIf

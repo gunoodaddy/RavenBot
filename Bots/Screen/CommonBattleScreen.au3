@@ -44,12 +44,7 @@ Func doBattle($battleId)
 	  Return False
    EndIf
 
-   _selectAutoBattle()
-
    SetLog("Started battle!", $COLOR_RED)
-
-   ; Wait for reaching to Enemy
-   If _Sleep(5500) Then Return
 
    Local $limitTime = 300000
 
@@ -58,8 +53,19 @@ Func doBattle($battleId)
 		 $limitTime = 660000
    EndSwitch
 
+   _Sleep(2000)
+
+   Local $firstLoop = True
    Local $hTimer = TimerInit()
    While 1
+	  If _selectAutoBattle() Then
+		 ; Wait for reaching to Enemy
+		 If $firstLoop Then
+			If _Sleep(5500) Then Return
+		 EndIf
+		 $firstLoop	= False
+	  EndIf
+
 	  If Int(TimerDiff($hTimer)) > $limitTime Then	; 11 min for raid
 		 SetLog("Unexpected battle detected...", $COLOR_RED)
 		 SaveImageToFile("battle_error_timeout");
@@ -114,6 +120,9 @@ Func _selectAutoBattle()
    If _ImageSearchArea($bmpPath, 0, 376, 412, 419, 460, $x, $y, $DefaultTolerance) Then
 	  ClickPos($BATTLE_AUTO_BUTTON_POS)
 	  SetLog("Auto Battle Clicked", $COLOR_DARKGREY)
+	  Return False
+   Else
+	  Return True
    EndIf
 
 EndFunc	;==>_selectAutoBattle

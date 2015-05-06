@@ -6,7 +6,7 @@
 
 Global $setting_stage_major = 7
 Global $setting_stage_minor = 2
-Global $setting_use_buff_items[$MaxBattleTypeCount][4] = [[False, False, False, False], [True, True, True, True], [False, False, False, True], [False, False, False, True], [False, False, False, True]]
+Global $setting_use_buff_items[$MaxBattleTypeCount][4] = [[False, False, False, False], [True, True, True, True], [False, False, False, True], [False, False, False, True], [True, False, False, True]]
 Global $setting_eat_potion[$MaxBattleTypeCount] = [True, True, True, True, True]
 Global $setting_item_sell = True
 Global $setting_item_sell_maximum_level = 1
@@ -14,6 +14,7 @@ Global $setting_pvp_enabled = False
 Global $setting_raid_enabled = True
 Global $setting_guild_enabled = True
 Global $setting_daily_enabled = False
+Global $setting_daily_level = 1	; 0~2
 ; ------------------------------
 
 
@@ -28,6 +29,7 @@ Func loadConfig()
 
 	  $setting_stage_major = Int(IniRead($config, $setting_common_group, "stage_major", "7"))
 	  $setting_stage_minor = Int(IniRead($config, $setting_common_group, "stage_minor", "2"))
+
 	  For $i = 0 To $MaxBattleTypeCount - 1
 		 $setting_use_buff_items[$i][0] = IniRead($config, $setting_common_group, "use_buff_" & $i & "_1", "False") == "True" ? True : False
 		 $setting_use_buff_items[$i][1] = IniRead($config, $setting_common_group, "use_buff_" & $i & "_2", "False") == "True" ? True : False
@@ -35,7 +37,9 @@ Func loadConfig()
 		 $setting_use_buff_items[$i][3] = IniRead($config, $setting_common_group, "use_buff_" & $i & "_4", "False") == "True" ? True : False
 		 $setting_eat_potion[$i] = IniRead($config, $setting_common_group, "eat_potion_" & $i, "False") == "True" ? True : False
 	  Next
+
 	  $setting_item_sell_maximum_level = Int(IniRead($config, $setting_common_group, "sell_item_level", "1"))
+	  $setting_daily_level = Int(IniRead($config, $setting_common_group, "daily_level", "1"))
    EndIf
 EndFunc	;==>loadConfig
 
@@ -102,6 +106,7 @@ Func applyConfig()
    _GUICtrlComboBox_SetCurSel($comboStageMinor, Int($setting_stage_minor) - 1)
 
    _GUICtrlComboBox_SetCurSel($comboSellItemLevel, Int($setting_item_sell_maximum_level))
+   _GUICtrlComboBox_SetCurSel($comboDailyLevel, Int($setting_daily_level))
 EndFunc	;==>applyConfig
 
 
@@ -121,6 +126,7 @@ Func saveConfig()
    IniWrite($config, $setting_common_group, "stage_major", _GUICtrlComboBox_GetCurSel($comboStageMajor) + 1)
    IniWrite($config, $setting_common_group, "stage_minor", _GUICtrlComboBox_GetCurSel($comboStageMinor) + 1)
    IniWrite($config, $setting_common_group, "sell_item_level", _GUICtrlComboBox_GetCurSel($comboSellItemLevel))
+   IniWrite($config, $setting_common_group, "daily_level", _GUICtrlComboBox_GetCurSel($comboDailyLevel))
 EndFunc	;==>saveConfig
 
 Func _IsChecked($idControlID)

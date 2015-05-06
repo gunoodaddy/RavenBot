@@ -70,7 +70,7 @@ Func startGuildBattle()
 		 Click($x, $y)
 	  EndIf
 
-	  If WaitBattleReady(True) Then
+	  If waitBattleReadyScreen(True) Then
 		 SetLog("Guild Battle Ready Screen Located", $COLOR_BLUE)
 		 Return True
 	  EndIf

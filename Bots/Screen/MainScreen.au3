@@ -5,6 +5,7 @@ Local Const $INVENTORY_BUTTON_POS[2] = [60, 435]
 Local Const $PVP_BUTTON_POS[2] = [594, 365]
 Local Const $RAID_BUTTON_POS[2] = [435, 125]
 Local COnst $GUILD_BUTTON_POS[2] = [680, 324]
+Local COnst $DAILY_BUTTON_POS[2] = [293, 164]
 Local Const $STAMINA_POTION_BUTTON_POS[2] = [189, 116]
 Local Const $STAMINA_POTION_USE_OK_BUTTON_POS[2] = [474, 366]
 Local Const $MAIN_QUEST_COSE_BUTTON_POS[2] = [720, 442]
@@ -12,7 +13,6 @@ Local Const $MAIN_QUEST_COSE_BUTTON_POS[2] = [720, 442]
 Local Const $MAIN_SCREEN_CHECK_REGION = [404, 380, 532, 468]
 Local Const $RAID_POPUP_CLOSE_BUTTON_REGION = [209, 206, 572, 376]
 Local Const $ARCHIEVEMENT_POPUP_CLOSE_BUTTON_REGION = [631, 378, 761, 474]
-
 
 
 
@@ -150,6 +150,18 @@ Func checkActiveGuildStatus()
 EndFunc	;==>checkActiveRaidStatus
 
 
+Func checkActiveDailyStatus()
+
+   Local $bmpPath = @ScriptDir & "\images\todo_on_icon.bmp"
+
+   If _ImageSearchArea($bmpPath, 0, 255, 184, 271, 200, $x, $y, $DefaultTolerance) Then
+	  SetLog("Active Daily ON", $COLOR_RED)
+	  Return True
+   EndIf
+   Return False
+EndFunc	;==>checkActiveDailyStatus
+
+
 Func clickAdventureButton()
    ClickPos($ADVENTURE_BUTTON_POS, 100, 2)	; twice click for some mistakes of mouse event
 EndFunc	;==>clickAdventureButton
@@ -166,18 +178,23 @@ EndFunc	;==>clickAdventureButton
 
 
 Func clickPvpButton()
-   ClickPos($PVP_BUTTON_POS, 100, 1)	; twice click for some mistakes of mouse event
+   ClickPos($PVP_BUTTON_POS, 100, 1)
 EndFunc	;==>clickAdventureButton
 
 
 Func clickRaidButton()
-   ClickPos($RAID_BUTTON_POS, 100, 1)	; twice click for some mistakes of mouse event
+   ClickPos($RAID_BUTTON_POS, 100, 1)
 EndFunc	;==>clickRaidButton
 
 
 Func clickGuildButton()
-   ClickPos($GUILD_BUTTON_POS, 100, 1)	; twice click for some mistakes of mouse event
+   ClickPos($GUILD_BUTTON_POS, 100, 1)
 EndFunc	;==>clickGuildButton
+
+
+Func clickDailyButton()
+   ClickPos($DAILY_BUTTON_POS, 100, 1)
+EndFunc	;==>clickDailyButton
 
 
 Func closeAllPopupOnMainScreen()
@@ -269,7 +286,7 @@ Func closeAllPopupOnMainScreen()
 
 	  _Sleep(2000)
 	  If ClickButtonImageArea(String(@ScriptDir & "\images\button_ok.bmp"), $POPUP_BUTTON_REGION) Then
-		 SetLog("package product canceled.", $color)
+		 SetLog("Package Product canceled.", $color)
 	  EndIf
    EndIf
 

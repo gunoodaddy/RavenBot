@@ -184,6 +184,23 @@ $checkBuffHealth[$Id_Guild] = GUICtrlCreateCheckbox("Buff Health", $x, $y, $w, 2
 
 GUICtrlCreateTabItem("Daily")
 
+$x = $contentPaneX
+$y = $contentPaneY
+$h = 20
+$w = 120
+
+$comboDailyLevel = GUICtrlCreateCombo("", $x, $y, 100, 20)
+$y += 30
+
+$checkBuffAttack[$Id_Daily] = GUICtrlCreateCheckbox("Buff Attack", $x, $y, $w, 25)
+$y += $h
+$checkBuffDefence[$Id_Daily] = GUICtrlCreateCheckbox("Buff Defence", $x, $y, $w, 25)
+$y += $h
+$checkBuffHealth[$Id_Daily] = GUICtrlCreateCheckbox("Buff Health", $x, $y, $w, 25)
+$y += $h
+$checkBuffAutoSkill[$Id_Daily] = GUICtrlCreateCheckbox("Buff AutoSkill", $x, $y, $w, 25)
+$y += $h
+$checkBattleEatPotion[$Id_Daily] = GUICtrlCreateCheckbox("Eat health potion", $x, $y, 120, 25)
 
 
 ;==================================
@@ -198,6 +215,10 @@ GUICtrlSetData($comboSellItemLevel, "None")
 For $i = 1 To 6
    GUICtrlSetData($comboSellItemLevel, "Level " & $i)
 Next
+
+GUICtrlSetData($comboDailyLevel, "Easy")
+GUICtrlSetData($comboDailyLevel, "Normal")
+GUICtrlSetData($comboDailyLevel, "Hard")
 
 GUICtrlSetOnEvent($btnScreenShot, "btnScreenShot")
 GUICtrlSetOnEvent($btnStart, "btnStart")
@@ -228,17 +249,18 @@ Func btnScreenShot()
    SaveImageToFile("screenshot")
 
    ; For Test
-   Local $x, $y
-   _CaptureRegion()
-   Local $bmpPath = String(@ScriptDir & "\images\stage_13.bmp")
-   If _ImageSearch($bmpPath, 0, $x, $y,  $DefaultTolerance / 3) Then
-	  _log("OK! :" & $x & "x" & $y)
+   If 0 Then
+	  Local $x, $y
+	  _CaptureRegion()
+	  Local $bmpPath = String(@ScriptDir & "\images\stage_13.bmp")
+	  If _ImageSearch($bmpPath, 0, $x, $y,  $DefaultTolerance / 3) Then
+		 _log("OK! :" & $x & "x" & $y)
+	  EndIf
+
+	  $RunState = True
+	  $PauseBot = False
+	  runBot()
    EndIf
-
-   $RunState = True
-   $PauseBot = False
-   runBot()
-
 EndFunc
 
 

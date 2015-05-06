@@ -1,5 +1,4 @@
 
-
 ; Buttons
 Local Const $ADVENTURE_LEFT_BUTTON_POS[2] = [54, 237]
 Local Const $ADVENTURE_RIGHT_BUTTON_POS[2] = [710, 237]
