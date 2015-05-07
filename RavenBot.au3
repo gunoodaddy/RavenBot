@@ -2,12 +2,12 @@
 
 #pragma compile(FileDescription, Raven Bot)
 #pragma compile(ProductName, Raven Bot)
-#pragma compile(ProductVersion, 0.8)
-#pragma compile(FileVersion, 0.8)
+#pragma compile(ProductVersion, 0.9)
+#pragma compile(FileVersion, 0.9)
 #pragma compile(LegalCopyright, ?The Bytecode Club)
 
 $sBotName = "Raven Bot"
-$sBotVersion = "0.8"
+$sBotVersion = "0.9"
 $sBotTitle = "AutoIt " & $sBotName & " v" & $sBotVersion
 
 If _Singleton($sBotTitle, 1) = 0 Then
@@ -27,6 +27,7 @@ EndIf
 #include <Bots/Screen/BlackSmithScreen.au3>
 #include <Bots/Screen/PvPScreen.au3>
 #include <Bots/Screen/GuildScreen.au3>
+#include <Bots/Screen/DailyScreen.au3>
 #include <Bots/Screen/AdventureStageScreen.au3>
 #include <Bots/Util/SetLog.au3>
 #include <Bots/Util/Config.au3>
